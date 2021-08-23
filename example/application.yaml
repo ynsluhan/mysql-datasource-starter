@@ -1,0 +1,16 @@
+mysql:
+  datasource:
+    master:
+      host: 127.0.0.1
+      port: 3306
+      user: root
+      password: root
+      database: test
+      load-gorm: true
+
+    slave:
+      host: 118.24.236.175
+      port: 3306
+      user: root
+      password: root
+      database: test-1
