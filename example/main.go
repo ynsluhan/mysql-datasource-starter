@@ -1,17 +1,21 @@
 package main
 
 import (
-	Starter "github.com/ynsluhan/mysql-datasource-starter"
+	"fmt"
 	"github.com/spf13/viper"
+	Starter "github.com/ynsluhan/mysql-datasource-starter"
 	"log"
 	"os"
 	"path"
 )
 
-type User struct {
+type Test struct {
 	Id   int
 	Name string
-	Age  int
+}
+
+func (*Test) TableName() string {
+	return "test"
 }
 
 /**
@@ -47,9 +51,22 @@ func main() {
 	// 获取某个数据源 db
 	db := source["master"].Db
 	//
-	var data []User
+	var data []Test
 	// 查询
-	Starter.GetStruct(db, "select * from user", &data)
+	Starter.GetStruct(db, "select * from test", &data)
+	//
+	log.Println(data)
+
+	gorm := source["master"].Gorm
+	//
+	fmt.Printf("%#v \n", gorm)
+	//
+	var test = Test{Name: " qwe"}
+	//
+	gorm.Create(&test)
+	//
+	//var t Test
+	gorm.Find(&data)
 	//
 	log.Println(data)
 

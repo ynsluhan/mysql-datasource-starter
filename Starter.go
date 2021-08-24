@@ -4,8 +4,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"gorm.io/driver/mysql"
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 	"strconv"
@@ -146,13 +146,13 @@ func SetDatasource(datasourceList map[string]DbStruct, m2 map[string]interface{}
 		db.SetConnMaxLifetime(time.Duration(interfaceMaxLifetime.(int)))
 	}
 	log.Printf("INFO MySQL connection %s successful：%s:%s/%s \n", datasourceName, host, port, database)
-	//
-	var gormDb *gorm.DB
 	// 进行gorm连接创建
 	if loadGorm != nil && loadGorm.(bool) {
-		InitGormDb(db, gormDb, datasourceName)
+		initGormDb := InitGormDb(db, datasourceName)
+		datasourceList[datasourceName] = DbStruct{Db: db, Gorm: initGormDb}
+	} else {
+		datasourceList[datasourceName] = DbStruct{Db: db}
 	}
-	datasourceList[datasourceName] = DbStruct{Db: db, Gorm: gormDb}
 }
 
 /**
@@ -163,16 +163,18 @@ func SetDatasource(datasourceList map[string]DbStruct, m2 map[string]interface{}
  * @param gormDb
  * @param datasourceName
  */
-func InitGormDb(db *sqlx.DB, gormDb *gorm.DB, datasourceName string) {
+func InitGormDb(db *sqlx.DB, datasourceName string) *gorm.DB {
 	//
 	var err error
 	// 创建gorm, 使用现有连接
-	gormDb, err = gorm.Open(mysql.New(mysql.Config{Conn: db}), &gorm.Config{})
+	gormDb, err := gorm.Open(mysql.New(mysql.Config{Conn: db}), &gorm.Config{})
 	//
 	if err != nil {
 		log.Fatal("ERROR gorm", datasourceName, "create fail:", err)
 	}
 	log.Println("INFO Mysql Gorm", datasourceName, "init success.")
+	//
+	return gormDb
 }
 
 /**
