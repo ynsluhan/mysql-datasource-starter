@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	Starter "github.com/ynsluhan/mysql-datasource-starter"
 	"log"
@@ -49,7 +48,8 @@ func main() {
 	// 获取数据源map
 	source := Starter.GetDataSource()
 	// 获取某个数据源 db
-	db := source["master"].Db
+	//db := source["master"].Db
+	db := source("master").Db
 	//
 	var data []Test
 	// 查询
@@ -57,17 +57,18 @@ func main() {
 	//
 	log.Println(data)
 
-	gorm := source["master"].Gorm
-	//
-	fmt.Printf("%#v \n", gorm)
-	//
-	var test = Test{Name: " qwe"}
-	//
-	gorm.Create(&test)
-	//
-	//var t Test
-	gorm.Find(&data)
-	//
-	log.Println(data)
+	// gorm
+	//gorm := source["master"].Gorm
+	////
+	//fmt.Printf("%#v \n", gorm)
+	////
+	//var test = Test{Name: " qwe"}
+	////
+	//gorm.Create(&test)
+	////
+	////var t Test
+	//gorm.Find(&data)
+	////
+	//log.Println(data)
 
 }

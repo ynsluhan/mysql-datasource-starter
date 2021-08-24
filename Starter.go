@@ -185,8 +185,13 @@ func InitGormDb(db *sqlx.DB, datasourceName string) *gorm.DB {
  * @Time 2021-08-23 14:18:20
  * @return map[string]DbStruct
  */
-func GetDataSource() map[string]DbStruct {
-	return datasourceList
+//func GetDataSource() map[string]DbStruct {
+//	return datasourceList
+//}
+func GetDataSource() func(datasourceName string) DbStruct {
+	return func(datasourceName string) DbStruct {
+		return datasourceList[datasourceName]
+	}
 }
 
 /**
