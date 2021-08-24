@@ -96,6 +96,7 @@ func SetDatasource(datasourceList map[string]DbStruct, m2 map[string]interface{}
 	user := GetStringMustOption("user", m2).(string)
 	password := GetStringMustOption("password", m2).(string)
 	database := GetStringMustOption("database", m2).(string)
+	url := GetStringMustOption("url", m2).(string)
 	// 选择性数据
 	// 连接最大空闲数量
 	interfaceMaxIdle := GetIntOption("max-idle", m2)
@@ -112,9 +113,10 @@ func SetDatasource(datasourceList map[string]DbStruct, m2 map[string]interface{}
 	// db
 	var db *sqlx.DB
 	// 数据源url
-	var vds = "%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=Local"
+	// var vds = "%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=Local"
+	var vds = "%s:%s@tcp(%s:%s)/%s?%s"
 	// 根据env获取host 根据env获取host
-	var dataSource = fmt.Sprintf(vds, user, password, host, port, database)
+	var dataSource = fmt.Sprintf(vds, user, password, host, port, database, url)
 	//
 	var err error
 	//
