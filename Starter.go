@@ -42,10 +42,10 @@ mysql:
 		load-gorm: true		# 是否加载gorm
 
     - slave:
-        host: 47.108.217.109
-        port: 3206
-        user: ynsluhan
-        password: yNsluhan#0817
+        host: 127.0.0.1
+        port: 3306
+        user: root
+        password: root123
         database: arc-order
         max-idle: 2
         max-pool-size: 5
